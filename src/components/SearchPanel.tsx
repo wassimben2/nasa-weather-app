@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { MapPin, Calendar, Search, Clock3, X, Navigation,PartyPopper } from 'lucide-react';
+import { MapPin, Calendar, Search, Clock3, X, Navigation, PartyPopper,CloudSun     } from 'lucide-react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -20,26 +20,21 @@ export function SearchPanel({ onSearch }: SearchPanelProps) {
 
   useEffect(() => {
     if (showMap && mapContainerRef.current && !mapRef.current) {
-      // Initialiser la carte
       const map = L.map(mapContainerRef.current).setView([20, 0], 2);
       
-      // Ajouter les tuiles OpenStreetMap
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors',
         maxZoom: 19
       }).addTo(map);
       
-      // Gérer les clics sur la carte
       map.on('click', (e: any) => {
         const { lat, lng } = e.latlng;
         setSelectedCoords({ lat, lng });
         
-        // Supprimer l'ancien marqueur s'il existe
         if (markerRef.current) {
           map.removeLayer(markerRef.current);
         }
         
-        // Créer un nouveau marqueur
         const customIcon = L.divIcon({
           className: 'custom-marker',
           html: '<div style="width: 30px; height: 30px;"><div style="position: absolute; inset: 0; background: red; border-radius: 50%; animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite; opacity: 0.75;"></div><svg style="position: relative; width: 30px; height: 30px; color: red; fill: red;" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>',
@@ -88,7 +83,6 @@ export function SearchPanel({ onSearch }: SearchPanelProps) {
           };
           setSelectedCoords(coords);
           
-          // Centrer la carte sur la position
           if (mapRef.current) {
             mapRef.current.setView([coords.lat, coords.lng], 13);
             
@@ -133,21 +127,19 @@ export function SearchPanel({ onSearch }: SearchPanelProps) {
       <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
       
       <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
-        <div className="w-full max-w-2xl">
+        <div className="w-full max-w-2xl mt-24">
           <div className="text-center mb-12 animate-fade-in">
             <div className="inline-block mb-6 relative">
               <div className="absolute inset-0 blur-3xl bg-blue-500 opacity-30 animate-pulse"></div>
-              <div className="flex-1 flex justify-center">
-                <img src="/logo.png" alt="Logo" className="h-16 w-auto" />
-              </div>
+              <CloudSun    className="w-24 h-24 text-blue-400 relative z-10" />
             </div>
 
-            <h1 className="text-7xl font-bold mb-4 bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-500 bg-clip-text text-transparent animate-shimmer bg-[length:200%_100%]">
-              Nasa's Space App Challenge
+            <h1 className="text-6xl font-bold mb-4 bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-500 bg-clip-text text-transparent animate-shimmer bg-[length:200%_100%]">
+              Predicting Tomorrow, From Space
             </h1>
 
-            <p className="text-2xl text-blue-200 font-light tracking-wide">
-              Will it rain on my Parade
+            <p className="text-2xl text-blue-200 font-light tracking-wide mt-7">
+               Harness NASA’s satellite data to forecast your perfect day.
             </p>
           </div>
 
@@ -160,21 +152,16 @@ export function SearchPanel({ onSearch }: SearchPanelProps) {
                   <MapPin className="w-5 h-5" />
                   Location
                 </label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    value={location}
-                    onChange={(e) => setLocation(e.target.value)}
-                   
-                    placeholder="Click to select location or type..."
-                    className="w-full bg-white/5 border border-white/20 rounded-xl px-4 py-4 text-white placeholder-blue-300/50 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all duration-300 cursor-pointer"
-                    required
-                  />
-                  <MapPin 
-                    className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-blue-400 cursor-pointer hover:text-blue-300 transition-colors"
-                    onClick={() => setShowMap(true)}
-                  />
-                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowMap(true)}
+                  className="w-full bg-gradient-to-r from-blue-500/20 to-cyan-500/20 border-2 border-blue-400/50 rounded-xl px-4 py-4 text-left text-white hover:from-blue-500/30 hover:to-cyan-500/30 hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300 cursor-pointer flex items-center justify-between group/btn"
+                >
+                  <span className={location ? "text-white" : "text-blue-300/70"}>
+                    {location || "Click to select location on map"}
+                  </span>
+                  <MapPin className="w-5 h-5 text-blue-400 group-hover/btn:text-blue-300 transition-colors" />
+                </button>
               </div>
             </div>
 
@@ -186,13 +173,16 @@ export function SearchPanel({ onSearch }: SearchPanelProps) {
                   <Calendar className="w-5 h-5" />
                   Date
                 </label>
-                <input
-                  type="date"
-                  value={date}
-                  onChange={(e) => setDate(e.target.value)}
-                  className="w-full bg-white/5 border border-white/20 rounded-xl px-4 py-4 text-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all duration-300"
-                  required
-                />
+                <div className="relative">
+                  <input
+                    type="date"
+                    value={date}
+                    onChange={(e) => setDate(e.target.value)}
+                    className="w-full bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border-2 border-cyan-400/50 rounded-xl px-4 py-4 text-white hover:from-cyan-500/30 hover:to-blue-500/30 hover:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition-all duration-300 cursor-pointer [color-scheme:dark]"
+                    required
+                  />
+                  
+                </div>
               </div>
             </div>
 
@@ -204,43 +194,47 @@ export function SearchPanel({ onSearch }: SearchPanelProps) {
                   <Clock3 className="w-5 h-5" />
                   Time
                 </label>
-                <input
-                  type="time"
-                  value={time}
-                  onChange={(e) => setTime(e.target.value)}
-                  className="w-full bg-white/5 border border-white/20 rounded-xl px-4 py-4 text-white focus:outline-none focus:ring-2 focus:ring-pink-400 focus:border-transparent transition-all duration-300"
-                  required
-                />
+                <div className="relative">
+                  <input
+                    type="time"
+                    value={time}
+                    onChange={(e) => setTime(e.target.value)}
+                    className="w-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 border-2 border-pink-400/50 rounded-xl px-4 py-4 text-white hover:from-purple-500/30 hover:to-pink-500/30 hover:border-pink-400 focus:outline-none focus:ring-2 focus:ring-pink-400 transition-all duration-300 cursor-pointer [color-scheme:dark]"
+                    required
+                  />
+                  
+                </div>
               </div>
             </div>
+
             <div className="group relative">
-              {/* Glow animé au survol */}
               <div className="absolute inset-0 bg-gradient-to-r from-orange-500 to-rose-500 rounded-2xl blur-xl opacity-0 group-hover:opacity-30 transition-all duration-500"></div>
 
-              {/* Conteneur principal */}
               <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 transform transition-all duration-300 hover:scale-[1.02] hover:bg-white/10">
                 <label className="flex items-center gap-3 text-orange-300 font-semibold mb-3">
                   <PartyPopper className="w-5 h-5" />
                   Event
                 </label>
-                <select
-                  value={event}
-                  onChange={(e) => setEvent(e.target.value)}
-                  className="w-full bg-white border border-white/20 rounded-xl px-4 py-4 text-black focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-300"
-                  required
-                >
-                  <option value="" disabled>Select an event</option>
-                  <option value="BBQ">🔥 BBQ</option>
-                  <option value="Camping">🏕️ Camping</option>
-                  <option value="Fishing">🐟 Fishing</option>
-                  <option value="Beach">🏖️ Beach</option>
-                  <option value="Road Trip">🚗 Road Trip</option>
-                  <option value="Hiking">🥾 Hiking</option>
-                  <option value="Other">Other</option>
-                </select>
+                <div className="relative">
+                  <select
+                    value={event}
+                    onChange={(e) => setEvent(e.target.value)}
+                    className="w-full bg-gradient-to-r bg-orange-300 from-orange-500/20 to-rose-500/20 border-2 border-orange-400/50 rounded-xl px-4 py-4 text-white hover:from-orange-500/30 hover:to-rose-500/30 hover:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-400 transition-all duration-300 cursor-pointer appearance-none"
+                    required
+                  >
+                    <option value="" className="bg-slate-800">Select an event</option>
+                    <option value="BBQ" className="bg-slate-800">🔥 BBQ</option>
+                    <option value="Camping" className="bg-slate-800">🏕️ Camping</option>
+                    <option value="Fishing" className="bg-slate-800">🐟 Fishing</option>
+                    <option value="Beach" className="bg-slate-800">🏖️ Beach</option>
+                    <option value="Road Trip" className="bg-slate-800">🚗 Road Trip</option>
+                    <option value="Hiking" className="bg-slate-800">🥾 Hiking</option>
+                    <option value="Other" className="bg-slate-800">Other</option>
+                  </select>
+                  <PartyPopper className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-orange-400 pointer-events-none" />
+                </div>
               </div>
             </div>
-
 
             <button
               onClick={(e) => {
@@ -283,7 +277,6 @@ export function SearchPanel({ onSearch }: SearchPanelProps) {
           </div>
         </div>
 
-        {/* Map Modal */}
         {showMap && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
             <div className="relative bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl border border-white/10 p-6 w-full max-w-4xl max-h-[90vh] overflow-hidden shadow-2xl">

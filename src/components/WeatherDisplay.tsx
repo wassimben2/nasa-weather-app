@@ -270,7 +270,7 @@ export function WeatherDisplay({ location, date, onReset }: WeatherDisplayProps)
         {/* Historical Trends */}
         {!isLoading && (
           <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-8 mt-11 mr-20 ml-20">
-            <h3 className="text-2xl font-bold text-blue-300 mb-6">12-Month Historical Weather Trends</h3>
+            <h3 className="text-2xl font-bold text-blue-300 mb-6">62-days Historical Weather Trends</h3>
             <ResponsiveContainer width="100%" height={350}>
               <AreaChart data={historicalData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#ffffff20" />
