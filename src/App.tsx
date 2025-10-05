@@ -21,7 +21,7 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-slate-950 via-blue-950 to-slate-900">
+    <div className=" min-h-screen relative overflow-hidden bg-gradient-to-br from-slate-950 via-blue-950 to-slate-900">
       <ParticleBackground />
 
       <div className="relative z-10">

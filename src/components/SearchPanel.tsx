@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { MapPin, Calendar, Search, Clock3, Navigation, PartyPopper } from 'lucide-react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-
+import '../index.css';
 interface SearchPanelProps {
   onSearch: (location: string, date: string, time: string) => void;
 }
@@ -123,7 +123,7 @@ export function SearchPanel({ onSearch }: SearchPanelProps) {
       <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
       
       <div className="min-h-screen flex flex-col items-center justify-start p-6 relative overflow-hidden bg-[#262626]">
-        <div className="absolute top-0 left-0 right-0 h-64 pointer-events-none">
+        <div className="absolute top-0 left-0 right-0 h-64 pointer-events-none ml-44 mr-44">
            <img
               src="/public/file.svg"
               alt="Illustration"
@@ -132,17 +132,17 @@ export function SearchPanel({ onSearch }: SearchPanelProps) {
         </div>
 
         <div className="w-full max-w-5xl mt-16 relative z-10">
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-white tracking-tight mb-2">
+          <div className="text-center mt-20">
+            <h1 className="font-questrial text-4xl font-bold text-white tracking-tight mb-2">
               Weather Prediction
             </h1>
-            <p className="text-sm text-gray-400">
+            <p className="font-questrial text-sm text-gray-400">
               Harness NASA's satellite data to forecast your perfect day
             </p>
           </div>
 
           {/* Search Panel */}
-          <div className="bg-gray-800/80 backdrop-blur-sm border border-gray-700 rounded-2xl p-6 mb-6">
+          <div className="bg-[#36373a] backdrop-blur-sm border border-gray-700 rounded-2xl p-6 mb-6 mt-10">
             <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-4">
               {/* Location */}
               <div className="md:col-span-2">
@@ -226,7 +226,8 @@ export function SearchPanel({ onSearch }: SearchPanelProps) {
                   onSearch(location, date, time);
                 }
               }}
-              className="w-full bg-blue-600 hover:bg-blue-700 rounded-lg px-6 py-3 flex items-center justify-center gap-2 transition-all"
+              className="w-1/5 mx-auto bg-blue-600 hover:bg-blue-700 rounded-full px-6 py-3 flex items-center justify-center gap-2 transition-all mt-10"
+
             >
               <Search className="w-4 h-4 text-white" />
               <span className="text-sm font-semibold text-white">Rechercher</span>
